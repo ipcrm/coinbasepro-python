@@ -419,7 +419,7 @@ class AuthenticatedClient(PublicClient):
 
         return self.place_order(**params)
 
-    def place_stop_order(self, product_id, stop_type, price, size=None, funds=None,
+    def place_stop_order(self, product_id, stop_type, price, stop_price=None, size=None, funds=None,
                          client_oid=None,
                          stp=None,
                          overdraft_enabled=None,
@@ -431,7 +431,9 @@ class AuthenticatedClient(PublicClient):
             stop_type(str): Stop type ('entry' or 'loss')
                       loss: Triggers when the last trade price changes to a value at or below the stop_price.
                       entry: Triggers when the last trade price changes to a value at or above the stop_price
-            price (Decimal): Desired price at which the stop order triggers.
+            price (Decimal): Limit price for stop order.  If stop_price is not supplied this price is the both the
+                stop_price and the limit price.
+            stop_price (Optional[Decimal]): Desired price at which the stop order triggers.
             size (Optional[Decimal]): Desired amount in crypto. Specify this or
                 `funds`.
             funds (Optional[Decimal]): Desired amount of quote currency to use.
@@ -463,7 +465,7 @@ class AuthenticatedClient(PublicClient):
                   'price': price,
                   'order_type': None,
                   'stop': stop_type,
-                  'stop_price': price,
+                  'stop_price': stop_price if stop_price != None else price,
                   'size': size,
                   'funds': funds,
                   'client_oid': client_oid,
