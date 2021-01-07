@@ -41,6 +41,7 @@ class AuthenticatedClient(PublicClient):
             super(AuthenticatedClient, self).__init__(api_url)
             self.session = requests.Session()
         self.auth = CBProAuth(key, b64secret, passphrase)
+        self.url = api_url
 
     def get_account(self, account_id):
         """ Get information for a single account.
