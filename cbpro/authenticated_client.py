@@ -40,6 +40,8 @@ class AuthenticatedClient(PublicClient):
         if public_client == None:
             super(AuthenticatedClient, self).__init__(api_url)
             self.session = requests.Session()
+        else:
+            self.session = public_client.session
         self.auth = CBProAuth(key, b64secret, passphrase)
         self.url = api_url
 
